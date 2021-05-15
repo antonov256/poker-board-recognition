@@ -1,12 +1,8 @@
 package com.antonov.poker.board_recognition.config;
 
 import com.antonov.poker.board_recognition.RecognitionSettings;
-import com.antonov.poker.board_recognition.config.loading.*;
-import com.antonov.poker.board_recognition.config.parsing.ColorResourceBundleParser;
-import com.antonov.poker.board_recognition.config.parsing.CropResourceBundleParser;
-import com.antonov.poker.board_recognition.config.parsing.ResourceBundleParser;
+import com.antonov.poker.board_recognition.config.loading.Loading;
 import com.antonov.poker.board_recognition.cv.*;
-import com.antonov.poker.board_recognition.image_processing.ImageColorReplacingPreprocessor;
 import com.antonov.poker.board_recognition.image_processing.ImageProcessor;
 import com.antonov.poker.board_recognition.poker.model.CardRank;
 import com.antonov.poker.board_recognition.poker.model.CardSuit;
@@ -15,7 +11,6 @@ import com.antonov.poker.board_recognition.recognition.CardRankRecognition;
 import com.antonov.poker.board_recognition.recognition.CardRecognition;
 import com.antonov.poker.board_recognition.recognition.CardSuitRecognition;
 import com.antonov.poker.board_recognition.recognition.model.CardMarkup;
-import com.antonov.poker.board_recognition.recognition.model.Crop;
 import com.antonov.poker.board_recognition.recognition.model.CropConfig;
 import com.antonov.poker.board_recognition.recognition.model.TemplatesContainer;
 import com.antonov.poker.board_recognition.recognition.template_based.TemplateBasedBoardRecognition;
@@ -23,48 +18,36 @@ import com.antonov.poker.board_recognition.recognition.template_based.TemplateBa
 import com.antonov.poker.board_recognition.recognition.template_based.TemplateBasedCardRecognition;
 import com.antonov.poker.board_recognition.recognition.template_based.TemplateBasedCardSuitRecognition;
 
-import java.awt.*;
-import java.io.File;
-
 public class RecognitionApplicationConfiguration {
-    private final File templatesDir;
+    private final Loading<CropConfig> cropConfigLoading;
+    private final Loading<ImageProcessor> preprocessorLoading;
+    private final Loading<CardMarkup> cardMarkupLoading;
+    private final Loading<TemplatesContainer<CardRank>> rankTemplatesLoading;
+    private final Loading<TemplatesContainer<CardSuit>> suitTemplatesLoading;
+    private final Loading<RecognitionSettings> recognitionSettingsLoading;
 
-    private final ResourceBundleParser<Crop> cropParser;
-    private final ResourceBundleParser<Color> colorParser;
-
-    public RecognitionApplicationConfiguration(String templatesDir) {
-        this.templatesDir = new File(templatesDir);
-        this.cropParser = new CropResourceBundleParser();
-        this.colorParser = new ColorResourceBundleParser();
+    public RecognitionApplicationConfiguration(Loading<CropConfig> cropConfigLoading, Loading<ImageProcessor> preprocessorLoading, Loading<CardMarkup> cardMarkupLoading, Loading<TemplatesContainer<CardRank>> rankTemplatesLoading, Loading<TemplatesContainer<CardSuit>> suitTemplatesLoading, Loading<RecognitionSettings> recognitionSettingsLoading) {
+        this.cropConfigLoading = cropConfigLoading;
+        this.preprocessorLoading = preprocessorLoading;
+        this.cardMarkupLoading = cardMarkupLoading;
+        this.rankTemplatesLoading = rankTemplatesLoading;
+        this.suitTemplatesLoading = suitTemplatesLoading;
+        this.recognitionSettingsLoading = recognitionSettingsLoading;
     }
 
     public BoardRecognition getBoardRecognition() {
         BoardRecognition boardRecognition = new TemplateBasedBoardRecognition(
-                getCropConfig(),
-                getCardPreprocessor(),
+                cropConfigLoading.load(),
+                preprocessorLoading.load(),
                 getCardRecognition()
         );
 
         return boardRecognition;
     }
 
-    private CropConfig getCropConfig() {
-        CropConfigLoading cropConfigLoading = new CropConfigLoading("crop_config", cropParser);
-        CropConfig cropConfig = cropConfigLoading.load();
-
-        return cropConfig;
-    }
-
-    public ImageProcessor getCardPreprocessor() {
-        ImageColorReplacingPreprocessorLoading imagePreprocessorLoading = new ImageColorReplacingPreprocessorLoading("recognition", colorParser);
-        ImageColorReplacingPreprocessor imageColorReplacingPreprocessor = imagePreprocessorLoading.load();
-
-        return imageColorReplacingPreprocessor;
-    }
-
     private CardRecognition getCardRecognition() {
         CardRecognition cardRecognition = new TemplateBasedCardRecognition(
-                getCardMarkup(),
+                cardMarkupLoading.load(),
                 getCardRankRecognition(),
                 getCardSuitRecognition()
         );
@@ -72,48 +55,24 @@ public class RecognitionApplicationConfiguration {
         return cardRecognition;
     }
 
-    private CardMarkup getCardMarkup() {
-        CardMarkupLoading cardMarkupLoading = new CardMarkupLoading("card_markup", cropParser);
-        CardMarkup cardMarkup = cardMarkupLoading.load();
-
-        return cardMarkup;
-    }
-
     private CardRankRecognition getCardRankRecognition() {
-        CardRankTemplatesLoading cardRankTemplatesLoading = new CardRankTemplatesLoading(new File(templatesDir, "ranks"));
-        TemplatesContainer<CardRank> cardRankTemplates = cardRankTemplatesLoading.load();
-
         CardRankRecognition cardRankRecognition = new TemplateBasedCardRankRecognition(
-                cardRankTemplates,
+                rankTemplatesLoading.load(),
                 getImageDifferenceCalculation(),
-                getRecognitionSettings()
+                recognitionSettingsLoading.load()
         );
 
         return cardRankRecognition;
     }
 
     private CardSuitRecognition getCardSuitRecognition() {
-        CardSuitTemplatesLoading cardSuitTemplatesLoading = new CardSuitTemplatesLoading(new File(templatesDir, "suits"));
-        TemplatesContainer<CardSuit> cardSuitTemplates = cardSuitTemplatesLoading.load();
-
         CardSuitRecognition cardSuitRecognition = new TemplateBasedCardSuitRecognition(
-                cardSuitTemplates,
+                suitTemplatesLoading.load(),
                 getImageDifferenceCalculation(),
-                getRecognitionSettings()
+                recognitionSettingsLoading.load()
         );
 
         return cardSuitRecognition;
-    }
-
-    private RecognitionSettings getRecognitionSettings() {
-        RecognitionSettingsLoading recognitionSettingsLoading = new RecognitionSettingsLoading("recognition");
-        RecognitionSettings recognitionSettings = recognitionSettingsLoading.load();
-
-        return recognitionSettings;
-    }
-
-    private ColorsDifference getColorsDifferenceMetric() {
-        return new ArithmeticBrightnessDifference();
     }
 
     private ImageDifference getImageDifferenceCalculation() {
@@ -121,5 +80,9 @@ public class RecognitionApplicationConfiguration {
         ImageDifference slidingImageDifference = new SlidingImageDifference(naiveImageDifference);
 
         return slidingImageDifference;
+    }
+
+    private ColorsDifference getColorsDifferenceMetric() {
+        return new ArithmeticBrightnessDifference();
     }
 }
