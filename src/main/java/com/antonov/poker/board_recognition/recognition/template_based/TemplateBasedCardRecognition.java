@@ -41,7 +41,7 @@ public class TemplateBasedCardRecognition implements CardRecognition {
         Image suitImage = cardImage.getSubImage(cardMarkup.getSuitCrop());
         CardSuit suit = cardSuitRecognition.recognize(suitImage);
 
-        Card card = new Card.Utils().fromRankAndSuit(rank, suit);
+        Card card = new Card.Creating().fromRankAndSuit(rank, suit);
 
         return card;
     }

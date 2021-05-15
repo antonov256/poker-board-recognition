@@ -41,7 +41,7 @@ public class CardRankTemplatesLoading implements Loading<TemplatesContainer<Card
 
                 String name = f.getName().replaceAll("\\.png", "");
                 name = name.split(" ")[0];
-                CardRank cardRank = new CardRank.Utils().fromString(name);
+                CardRank cardRank = new CardRank.Creating().fromString(name);
                 Template<CardRank> template = new Template<>(image, cardRank);
 
                 templates.add(template);

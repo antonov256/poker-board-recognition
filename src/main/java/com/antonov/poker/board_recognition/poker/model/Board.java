@@ -11,7 +11,7 @@ public interface Board {
         return getCards().stream().map(Card::toString).collect(Collectors.joining());
     }
 
-    class Utils {
+    class Creating {
         public Board fromCards(List<Card> cards) {
             if (cards.size() == 3) {
                 return new FlopBoard(cards.get(0), cards.get(1), cards.get(2));
@@ -46,7 +46,7 @@ public interface Board {
                     firstCardStr = cardsStr.substring(0, 2);
                 }
 
-                Card card = new Card.Utils().fromString(firstCardStr);
+                Card card = new Card.Creating().fromString(firstCardStr);
                 cards.add(card);
 
                 cardsStr = cardsStr.substring(firstCardStr.length());

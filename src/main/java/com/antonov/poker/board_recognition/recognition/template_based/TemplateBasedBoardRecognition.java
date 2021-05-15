@@ -26,7 +26,7 @@ public class TemplateBasedBoardRecognition implements BoardRecognition {
     @Override
     public Board recognize(Image image) {
         List<Card> cards = recognizeCardsOnImage(image);
-        Board board = new Board.Utils().fromCards(cards);
+        Board board = new Board.Creating().fromCards(cards);
 
         return board;
     }

@@ -42,7 +42,7 @@ public class CardSuitTemplatesLoading implements Loading<TemplatesContainer<Card
                 String name = f.getName().replaceAll("\\.png", "");
                 name = name.split(" ")[0];
 
-                CardSuit cardSuit = new CardSuit.Utils().fromString(name);
+                CardSuit cardSuit = new CardSuit.Creating().fromString(name);
                 Template<CardSuit> template = new Template<>(image, cardSuit);
 
                 templates.add(template);

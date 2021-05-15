@@ -39,7 +39,7 @@ public enum CardRank implements Comparable<CardRank> {
         return rankName;
     }
 
-    public static class Utils {
+    public static class Creating {
         public CardRank fromValue(int value) {
             switch (value) {
                 case 14 : return ace;

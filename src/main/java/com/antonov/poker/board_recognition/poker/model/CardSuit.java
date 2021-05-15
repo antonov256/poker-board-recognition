@@ -27,7 +27,7 @@ public enum CardSuit {
         return suitName;
     }
 
-    public static class Utils {
+    public static class Creating {
         public CardSuit fromString(String string) {
             switch (string) {
                 case "s": return spades;

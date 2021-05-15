@@ -55,7 +55,7 @@ public class RecognitionTask {
                 Board recognizedBoard = boardRecognition.recognize(image);
 
                 String fileStr = f.getName().replaceAll("\\.png", "");
-                Board fileBoard = new Board.Utils().fromString(fileStr);
+                Board fileBoard = new Board.Creating().fromString(fileStr);
 
                 System.out.println(f.getName() + " - " + recognizedBoard.toString());
 

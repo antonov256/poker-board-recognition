@@ -67,10 +67,30 @@ public enum Card {
         this.cardSuit = cardSuit;
     }
 
-    public static class Utils {
+    public int getId() {
+        return id;
+    }
+
+    public CardRank getRank() {
+        return cardRank;
+    }
+
+    public CardSuit getSuit() {
+        return cardSuit;
+    }
+
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append(cardRank.toString()).append(cardSuit.toString());
+        return sb.toString();
+    }
+
+    public static class Creating {
         public Card fromRankAndSuit(CardRank rank, CardSuit suit) {
-            for(Card card : values()) {
-                if(card.getRank() == rank && card.getSuit() == suit)
+            for (Card card : values()) {
+                if (card.getRank() == rank && card.getSuit() == suit)
                     return card;
             }
 
@@ -78,15 +98,17 @@ public enum Card {
         }
 
         public Card fromString(String s) {
-            for(Card card : values()) {
-                if(card.toString().equals(s))
+            for (Card card : values()) {
+                if (card.toString().equals(s))
                     return card;
             }
 
             throw new IllegalArgumentException("Wrong string: " + s);
         }
+    }
 
-        public List<Card> getCardsByRank(CardRank rank){
+    public static class View {
+        public List<Card> cardsByRank(CardRank rank){
             switch (rank) {
                 case two:
                     return Arrays.asList(card_2h, card_2d, card_2s, card_2c);
@@ -118,25 +140,5 @@ public enum Card {
                     throw new IllegalArgumentException("Wrong CardRank: " + rank);
             }
         }
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public CardRank getRank() {
-        return cardRank;
-    }
-
-    public CardSuit getSuit() {
-        return cardSuit;
-    }
-
-
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append(cardRank.toString()).append(cardSuit.toString());
-        return sb.toString();
     }
 }
