@@ -1,6 +1,9 @@
 package com.antonov.poker.board_recognition.config;
 
+import com.antonov.poker.board_recognition.config.loading.CardMarkupLoading;
 import com.antonov.poker.board_recognition.config.loading.CropConfigLoading;
+import com.antonov.poker.board_recognition.config.parsing.CropResourceBundleParser;
+import com.antonov.poker.board_recognition.config.parsing.ResourceBundleParser;
 import com.antonov.poker.board_recognition.recognition.model.CardMarkup;
 import com.antonov.poker.board_recognition.recognition.model.Crop;
 import com.antonov.poker.board_recognition.recognition.model.CropConfig;
@@ -10,13 +13,16 @@ import java.io.File;
 
 public class TemplateCutterConfiguration {
     private final String templatesPath;
+    private final ResourceBundleParser<Crop> cropParser;
 
     public TemplateCutterConfiguration(String templatesPath) {
         this.templatesPath = templatesPath;
+        this.cropParser = new CropResourceBundleParser();
     }
 
     public TemplateCutting getTemplateCutter() {
-        CropConfig cropConfig = new CropConfigLoading().load();
+        CropConfigLoading cropConfigLoading = new CropConfigLoading("crop_config", cropParser);
+        CropConfig cropConfig = cropConfigLoading.load();
         File templatesDir = new File(templatesPath);
         CardMarkup cardMarkup = getCardMarkup();
 
@@ -25,11 +31,9 @@ public class TemplateCutterConfiguration {
     }
 
     private CardMarkup getCardMarkup() {
-        Crop rankCrop = new Crop(0, 0, 34, 27);
-        Crop suitCrop = new Crop(0, 27, 25, 19);
-        Crop cropForCheck = new Crop(39, 0, 15, 40);
+        CardMarkupLoading cardMarkupLoading = new CardMarkupLoading("card_markup", cropParser);
+        CardMarkup cardMarkup = cardMarkupLoading.load();
 
-        CardMarkup cardMarkup = new CardMarkup(rankCrop, suitCrop, cropForCheck);
         return cardMarkup;
     }
 }

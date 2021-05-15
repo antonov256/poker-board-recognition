@@ -12,8 +12,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardSuitTemplatesLoading {
-    public TemplatesContainer<CardSuit> load(File dir) {
+public class CardSuitTemplatesLoading implements Loading<TemplatesContainer<CardSuit>> {
+    private final File dir;
+
+    public CardSuitTemplatesLoading(File dir) {
+        this.dir = dir;
+    }
+
+    @Override
+    public TemplatesContainer<CardSuit> load() {
         if(dir == null || !dir.exists())
             throw new IllegalArgumentException("Wrong templates dir: " + dir);
 
@@ -43,7 +50,6 @@ public class CardSuitTemplatesLoading {
                 e.printStackTrace();
             }
         }
-
 
         TemplatesContainer<CardSuit> templatesContainer = new TemplatesContainer<>(templates);
         return templatesContainer;
