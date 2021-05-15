@@ -19,30 +19,37 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 public class RecognitionApplication {
-    private final String imagesDirPath;
+    private final String[] args;
 
-    public RecognitionApplication(String imagesDirPath) {
-        this.imagesDirPath = imagesDirPath;
+    public RecognitionApplication(String[] args) {
+        this.args = args;
     }
 
     public static void main(String[] args) {
-        if (args.length == 0) {
-            System.out.println("You need to specify images path as argument");
-            return;
-        }
-
-        String imagesDirPath = args[0];
-        RecognitionApplication recognitionApplication = new RecognitionApplication(imagesDirPath);
+        RecognitionApplication recognitionApplication = new RecognitionApplication(args);
         recognitionApplication.launch();
     }
 
     public void launch() {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("application");
+
+        File imagesDir;
+        if (args.length != 0) {
+            imagesDir = new File(args[0]);
+        } else {
+            imagesDir = new File(resourceBundle.getString("images.dir"));
+        }
+
+        File templatesDir = new File(resourceBundle.getString("templates.dir"));
+        BoardRecognition boardRecognition = configureBoardRecognition(templatesDir);
+
         RecognitionTask recognitionTask = new RecognitionTask(
-                new File(imagesDirPath),
-                configureBoardRecognition()
+                imagesDir,
+                boardRecognition
         );
 
         recognitionTask.run();
+
         int correctCount = recognitionTask.getCorrectCount();
         int totalCount = recognitionTask.getTotalCount();
 
@@ -50,18 +57,15 @@ public class RecognitionApplication {
         System.out.println(summary);
     }
 
-    private BoardRecognition configureBoardRecognition() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("application");
-        String templatesDirPath = resourceBundle.getString("templates.dir");
-
+    private BoardRecognition configureBoardRecognition(File templatesDir) {
         ResourceBundleParser<Crop> cropParser = new CropResourceBundleParser();
         ResourceBundleParser<Color> colorParser = new ColorResourceBundleParser();
 
         Loading<CropConfig> cropConfigLoading = new CropConfigLoading("crop_config", cropParser);
         Loading<ImageProcessor> preprocessorLoading = new ImageColorReplacingPreprocessorLoading("recognition", colorParser);
         Loading<CardMarkup> cardMarkupLoading = new CardMarkupLoading("card_markup", cropParser);
-        Loading<TemplatesContainer<CardRank>> rankTemplatesLoading = new CardRankTemplatesLoading(new File(templatesDirPath, "ranks"));
-        Loading<TemplatesContainer<CardSuit>> suitTemplatesLoading = new CardSuitTemplatesLoading(new File(templatesDirPath, "suits"));
+        Loading<TemplatesContainer<CardRank>> rankTemplatesLoading = new CardRankTemplatesLoading(new File(templatesDir, "ranks"));
+        Loading<TemplatesContainer<CardSuit>> suitTemplatesLoading = new CardSuitTemplatesLoading(new File(templatesDir, "suits"));
         Loading<RecognitionSettings> recognitionSettingsLoading = new RecognitionSettingsLoading("recognition");
 
         RecognitionApplicationConfiguration recognitionApplicationConfiguration = new RecognitionApplicationConfiguration(
@@ -73,6 +77,8 @@ public class RecognitionApplication {
                 recognitionSettingsLoading
         );
 
-        return recognitionApplicationConfiguration.getBoardRecognition();
+        BoardRecognition boardRecognition = recognitionApplicationConfiguration.getBoardRecognition();
+
+        return boardRecognition;
     }
 }
