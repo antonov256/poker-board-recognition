@@ -24,7 +24,6 @@ public class TemplateBasedCardRankRecognition implements CardRankRecognition {
 
     @Override
     public CardRank recognize(Image rankImage) throws CantRecognizeException {
-
         Double minDifference = Double.MAX_VALUE;
         Optional<CardRank> cardRankOptional = Optional.empty();
 
@@ -40,10 +39,9 @@ public class TemplateBasedCardRankRecognition implements CardRankRecognition {
         if(cardRankOptional.isEmpty())
             throw new CantRecognizeException("Cant recognize CardRank");
 
-        if(minDifference > recognitionSettings.getMaxAcceptableDifference())
+        if(minDifference > recognitionSettings.getMaxCardRankAcceptableDifference())
             throw new CantRecognizeException("minDifference is too big: " + minDifference);
 
-//        System.out.println("cardRank minDifference: " + minDifference);
         return cardRankOptional.get();
     }
 }

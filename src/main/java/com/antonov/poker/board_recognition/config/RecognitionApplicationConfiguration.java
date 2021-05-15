@@ -100,10 +100,13 @@ public class RecognitionApplicationConfiguration {
     }
 
     private RecognitionSettings getRecognitionSettings() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("settings");
-        Double maxAcceptableDifference = Double.valueOf(resourceBundle.getString("recognition.maxAcceptableDifference"));
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("recognition");
+        Double maxCardRankAcceptableDifference = Double.valueOf(resourceBundle.getString("recognition.cardRank.maxAcceptableDifference"));
+        Double maxCardSuitAcceptableDifference = Double.valueOf(resourceBundle.getString("recognition.cardSuit.maxAcceptableDifference"));
 
-        RecognitionSettings recognitionSettings = new RecognitionSettings(maxAcceptableDifference);
+        RecognitionSettings recognitionSettings = new RecognitionSettings(
+                maxCardRankAcceptableDifference,
+                maxCardSuitAcceptableDifference);
         return recognitionSettings;
     }
 

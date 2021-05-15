@@ -13,7 +13,7 @@ public class Main {
 
         String imagesDirPath = args[0];
 
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("settings");
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("application");
         String templatesDirPath = resourceBundle.getString("templates.dir");
 
         RecognitionApplicationConfiguration recognitionApplicationConfiguration = new RecognitionApplicationConfiguration(templatesDirPath);

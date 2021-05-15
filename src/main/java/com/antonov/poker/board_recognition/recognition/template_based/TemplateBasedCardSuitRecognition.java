@@ -39,10 +39,9 @@ public class TemplateBasedCardSuitRecognition implements CardSuitRecognition {
         if(cardSuitOptional.isEmpty())
             throw new CantRecognizeException("Cant recognize CardSuit");
 
-        if(minDifference > recognitionSettings.getMaxAcceptableDifference())
+        if(minDifference > recognitionSettings.getMaxCardSuitAcceptableDifference())
             throw new CantRecognizeException("minDifference is too big: " + minDifference);
 
-//        System.out.println("cardSuit minDifference: " + minDifference);
         return cardSuitOptional.get();
     }
 }
