@@ -4,20 +4,25 @@ plugins {
 }
 
 group 'com.antonov.poker.board_recognition'
-version '1.0'
+version '2.0'
 
 repositories {
     mavenCentral()
 }
 
 application {
-    mainClass = 'com.antonov.app.Main'
+    mainClass = 'com.antonov.poker.board_recognition.RecognitionApplication'
 }
 
 task copyFiles() {
     copy {
         from 'templates/'
         into "${buildDir}/libs/templates"
+    }
+
+    copy {
+        from 'images_marked/'
+        into "${buildDir}/libs/images_marked"
     }
 
     copy {
@@ -32,7 +37,7 @@ jar {
     jar.archiveFileName = "${project.name}.jar"
     manifest {
         attributes(
-                'Main-Class': 'com.antonov.poker.board_recognition.Main'
+                'Main-Class': 'com.antonov.poker.board_recognition.RecognitionApplication'
         )
     }
 }

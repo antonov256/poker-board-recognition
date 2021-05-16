@@ -24,7 +24,7 @@ public class RecognitionTask {
         this.imagesDir = imagesDir;
         this.boardRecognition = boardRecognition;
 
-        unrecognizedDir = new File(imagesDir, "unrecognized " + System.currentTimeMillis());
+        unrecognizedDir = new File(imagesDir, "unrecognized " + System.currentTimeMillis()).getAbsoluteFile();
     }
 
     public void run() {
