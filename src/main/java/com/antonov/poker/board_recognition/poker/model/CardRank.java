@@ -33,7 +33,7 @@ public enum CardRank implements Comparable<CardRank> {
 
     @Override
     public String toString() {
-        if(this == ten)
+        if (this == ten)
             return "10";
 
         return rankName;

@@ -108,7 +108,7 @@ public enum Card {
     }
 
     public static class View {
-        public List<Card> cardsByRank(CardRank rank){
+        public List<Card> cardsByRank(CardRank rank) {
             switch (rank) {
                 case two:
                     return Arrays.asList(card_2h, card_2d, card_2s, card_2c);

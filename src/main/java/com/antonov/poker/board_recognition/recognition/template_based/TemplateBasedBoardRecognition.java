@@ -1,12 +1,12 @@
 package com.antonov.poker.board_recognition.recognition.template_based;
 
+import com.antonov.poker.board_recognition.image_processing.ImageProcessor;
+import com.antonov.poker.board_recognition.poker.model.Board;
+import com.antonov.poker.board_recognition.poker.model.Card;
 import com.antonov.poker.board_recognition.recognition.BoardRecognition;
 import com.antonov.poker.board_recognition.recognition.CardRecognition;
 import com.antonov.poker.board_recognition.recognition.model.CropConfig;
 import com.antonov.poker.board_recognition.recognition.model.Image;
-import com.antonov.poker.board_recognition.image_processing.ImageProcessor;
-import com.antonov.poker.board_recognition.poker.model.Board;
-import com.antonov.poker.board_recognition.poker.model.Card;
 
 import java.util.ArrayList;
 import java.util.List;

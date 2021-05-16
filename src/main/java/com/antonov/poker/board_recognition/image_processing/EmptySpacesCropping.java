@@ -18,42 +18,42 @@ public class EmptySpacesCropping implements ImageProcessor {
         int height = image.getDimension().getHeight();
 
         int startX = 0;
-        for(int x = 0; x < width; x++) {
+        for (int x = 0; x < width; x++) {
             boolean isEmpty = checkColumnIsEmpty(image, x);
-            if(isEmpty)
+            if (isEmpty)
                 startX = x;
             else
                 break;
         }
 
         int startY = 0;
-        for(int y = 0; y < width; y++) {
+        for (int y = 0; y < width; y++) {
             boolean isEmpty = checkLineIsEmpty(image, y);
-            if(isEmpty)
+            if (isEmpty)
                 startY = y;
             else
                 break;
         }
 
         int endX = width - 1;
-        for(int x = width - 1; x >= 0; x--) {
+        for (int x = width - 1; x >= 0; x--) {
             boolean isEmpty = checkColumnIsEmpty(image, x);
-            if(isEmpty)
+            if (isEmpty)
                 endX = x;
             else
                 break;
         }
 
         int endY = height - 1;
-        for(int y = height - 1; y >= 0; y--) {
+        for (int y = height - 1; y >= 0; y--) {
             boolean isEmpty = checkLineIsEmpty(image, y);
-            if(isEmpty)
+            if (isEmpty)
                 endY = y;
             else
                 break;
         }
 
-        if(endX < startX || endY < startY) {
+        if (endX < startX || endY < startY) {
             startX = 0;
             startY = 0;
             endX = width - 1;
@@ -67,8 +67,8 @@ public class EmptySpacesCropping implements ImageProcessor {
     }
 
     private boolean checkLineIsEmpty(Image image, int y) {
-        for(int x = 0; x < image.getDimension().getWidth(); x++) {
-            if(!image.getColor(x, y).equals(emptyColor))
+        for (int x = 0; x < image.getDimension().getWidth(); x++) {
+            if (!image.getColor(x, y).equals(emptyColor))
                 return false;
         }
 
@@ -76,8 +76,8 @@ public class EmptySpacesCropping implements ImageProcessor {
     }
 
     private boolean checkColumnIsEmpty(Image image, int x) {
-        for(int y = 0; y < image.getDimension().getHeight(); y++) {
-            if(!image.getColor(x, y).equals(emptyColor))
+        for (int y = 0; y < image.getDimension().getHeight(); y++) {
+            if (!image.getColor(x, y).equals(emptyColor))
                 return false;
         }
 

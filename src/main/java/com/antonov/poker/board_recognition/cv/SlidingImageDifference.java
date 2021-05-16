@@ -20,13 +20,13 @@ public class SlidingImageDifference implements ImageDifference {
         int deltaY = candidate.getDimension().getHeight() - original.getDimension().getHeight();
 
         Double minDifference = Double.MAX_VALUE;
-        for(int x = 0; x < deltaX; x++) {
-            for(int y = 0; y < deltaY; y++) {
+        for (int x = 0; x < deltaX; x++) {
+            for (int y = 0; y < deltaY; y++) {
                 Crop crop = new Crop(x, y, original.getDimension().getWidth(), original.getDimension().getHeight());
                 Image candidateSubImage = candidate.getSubImage(crop);
 
                 Double difference = imageDifference.difference(original, candidateSubImage);
-                if(difference < minDifference)
+                if (difference < minDifference)
                     minDifference = difference;
             }
         }

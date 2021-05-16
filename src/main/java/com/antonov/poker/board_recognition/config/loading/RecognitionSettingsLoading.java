@@ -19,7 +19,9 @@ public class RecognitionSettingsLoading implements Loading<RecognitionSettings> 
 
         RecognitionSettings recognitionSettings = new RecognitionSettings(
                 maxCardRankAcceptableDifference,
-                maxCardSuitAcceptableDifference);
+                maxCardSuitAcceptableDifference
+        );
+
         return recognitionSettings;
     }
 }

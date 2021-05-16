@@ -16,7 +16,7 @@ public class ArithmeticBrightnessDifference implements ColorsDifference {
     private Double calcBrightness(Color color) {
         int sum = color.getRed() + color.getGreen() + color.getBlue();
         Double brightness = 1d * sum / 3;
-        new String("aaa").substring(1, 3);
+
         return brightness;
     }
 

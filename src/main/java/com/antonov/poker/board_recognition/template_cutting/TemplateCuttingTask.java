@@ -1,12 +1,14 @@
 package com.antonov.poker.board_recognition.template_cutting;
 
-import com.antonov.poker.board_recognition.image_check.ImageCheck;
-import com.antonov.poker.board_recognition.image_processing.ImageProcessor;
-import com.antonov.poker.board_recognition.recognition.model.*;
 import com.antonov.poker.board_recognition.image_check.CardIsPresentedCheck;
+import com.antonov.poker.board_recognition.image_check.ImageCheck;
 import com.antonov.poker.board_recognition.image_check.ImageIsEmptyCheck;
 import com.antonov.poker.board_recognition.image_processing.EmptySpacesCropping;
+import com.antonov.poker.board_recognition.image_processing.ImageProcessor;
+import com.antonov.poker.board_recognition.recognition.model.CardMarkup;
+import com.antonov.poker.board_recognition.recognition.model.CropConfig;
 import com.antonov.poker.board_recognition.recognition.model.Image;
+import com.antonov.poker.board_recognition.recognition.model.SimpleImage;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -29,7 +31,7 @@ public class TemplateCuttingTask {
         String cuttingExecutionSubdirectoryName = String.valueOf(System.currentTimeMillis());
         this.templatesOutputDir = new File(templatesOutputDir, cuttingExecutionSubdirectoryName).getAbsoluteFile();
 
-        if(!this.templatesOutputDir.exists()) {
+        if (!this.templatesOutputDir.exists()) {
             this.templatesOutputDir.mkdir();
         }
 
@@ -80,8 +82,8 @@ public class TemplateCuttingTask {
         processCardImage(image.getSubImage(cropConfig.getCard5()), 5);
     }
 
-    private void processCardImage(Image cardImage, int cardNum){
-        if(!cardIsPresentedCheck.check(cardImage)) {
+    private void processCardImage(Image cardImage, int cardNum) {
+        if (!cardIsPresentedCheck.check(cardImage)) {
             saveImage(cardImage, "empty_card");
             return;
         }

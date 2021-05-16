@@ -1,10 +1,10 @@
 package com.antonov.poker.board_recognition.recognition.template_based;
 
 import com.antonov.poker.board_recognition.RecognitionSettings;
+import com.antonov.poker.board_recognition.cv.ImageDifference;
 import com.antonov.poker.board_recognition.exception.CantRecognizeException;
 import com.antonov.poker.board_recognition.poker.model.CardRank;
 import com.antonov.poker.board_recognition.recognition.CardRankRecognition;
-import com.antonov.poker.board_recognition.cv.ImageDifference;
 import com.antonov.poker.board_recognition.recognition.model.Image;
 import com.antonov.poker.board_recognition.recognition.model.Template;
 import com.antonov.poker.board_recognition.recognition.model.TemplatesContainer;
@@ -27,19 +27,19 @@ public class TemplateBasedCardRankRecognition implements CardRankRecognition {
         Double minDifference = Double.MAX_VALUE;
         Optional<CardRank> cardRankOptional = Optional.empty();
 
-        for(Template<CardRank> rankTemplate : cardRankTemplates.getTemplates()) {
+        for (Template<CardRank> rankTemplate : cardRankTemplates.getTemplates()) {
             Double difference = imageDifference.difference(rankTemplate.getImage(), rankImage);
 
-            if(difference < minDifference) {
+            if (difference < minDifference) {
                 minDifference = difference;
                 cardRankOptional = Optional.of(rankTemplate.getObject());
             }
         }
 
-        if(cardRankOptional.isEmpty())
+        if (cardRankOptional.isEmpty())
             throw new CantRecognizeException("Cant recognize CardRank");
 
-        if(minDifference > recognitionSettings.getMaxCardRankAcceptableDifference())
+        if (minDifference > recognitionSettings.getMaxCardRankAcceptableDifference())
             throw new CantRecognizeException("minDifference is too big: " + minDifference);
 
         return cardRankOptional.get();

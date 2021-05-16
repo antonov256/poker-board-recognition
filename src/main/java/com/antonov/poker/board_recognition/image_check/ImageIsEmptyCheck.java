@@ -16,10 +16,10 @@ public class ImageIsEmptyCheck implements ImageCheck {
         int width = image.getDimension().getWidth();
         int height = image.getDimension().getHeight();
 
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 Color color = image.getColor(x, y);
-                if(!color.equals(emptyColor))
+                if (!color.equals(emptyColor))
                     return false;
             }
         }

@@ -23,7 +23,10 @@ public class ImageColorReplacingPreprocessorLoading implements Loading<ImageProc
         Color oldGrayColor = colorParser.parse(resourceBundle, "recognition.preprocessor.oldColor");
         Color newWhiteColor = colorParser.parse(resourceBundle, "recognition.preprocessor.newColor");
 
-        ImageColorReplacingPreprocessor imageColorReplacingPreprocessor = new ImageColorReplacingPreprocessor(oldGrayColor, newWhiteColor);
+        ImageColorReplacingPreprocessor imageColorReplacingPreprocessor = new ImageColorReplacingPreprocessor(
+                oldGrayColor,
+                newWhiteColor
+        );
 
         return imageColorReplacingPreprocessor;
     }

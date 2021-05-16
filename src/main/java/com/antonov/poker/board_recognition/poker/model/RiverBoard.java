@@ -3,7 +3,6 @@ package com.antonov.poker.board_recognition.poker.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class RiverBoard implements Board {
     private final TurnBoard turnBoard;

@@ -1,10 +1,10 @@
 package com.antonov.poker.board_recognition.recognition.template_based;
 
 import com.antonov.poker.board_recognition.RecognitionSettings;
+import com.antonov.poker.board_recognition.cv.ImageDifference;
 import com.antonov.poker.board_recognition.exception.CantRecognizeException;
 import com.antonov.poker.board_recognition.poker.model.CardSuit;
 import com.antonov.poker.board_recognition.recognition.CardSuitRecognition;
-import com.antonov.poker.board_recognition.cv.ImageDifference;
 import com.antonov.poker.board_recognition.recognition.model.Image;
 import com.antonov.poker.board_recognition.recognition.model.Template;
 import com.antonov.poker.board_recognition.recognition.model.TemplatesContainer;
@@ -27,19 +27,19 @@ public class TemplateBasedCardSuitRecognition implements CardSuitRecognition {
         Double minDifference = Double.MAX_VALUE;
         Optional<CardSuit> cardSuitOptional = Optional.empty();
 
-        for(Template<CardSuit> suitTemplate : cardSuitTemplates.getTemplates()) {
+        for (Template<CardSuit> suitTemplate : cardSuitTemplates.getTemplates()) {
             Double difference = imageDifference.difference(suitTemplate.getImage(), suitImage);
 
-            if(difference < minDifference) {
+            if (difference < minDifference) {
                 minDifference = difference;
                 cardSuitOptional = Optional.of(suitTemplate.getObject());
             }
         }
 
-        if(cardSuitOptional.isEmpty())
+        if (cardSuitOptional.isEmpty())
             throw new CantRecognizeException("Cant recognize CardSuit");
 
-        if(minDifference > recognitionSettings.getMaxCardSuitAcceptableDifference())
+        if (minDifference > recognitionSettings.getMaxCardSuitAcceptableDifference())
             throw new CantRecognizeException("minDifference is too big: " + minDifference);
 
         return cardSuitOptional.get();

@@ -32,7 +32,7 @@ public class CardRankTemplatesLoading implements Loading<TemplatesContainer<Card
         }
 
         for (File f : files) {
-            if(f == null || !f.exists() || !f.getName().endsWith(".png"))
+            if (f == null || !f.exists() || !f.getName().endsWith(".png"))
                 continue;
 
             try {
@@ -52,6 +52,7 @@ public class CardRankTemplatesLoading implements Loading<TemplatesContainer<Card
 
 
         TemplatesContainer<CardRank> templatesContainer = new TemplatesContainer<>(templates);
+
         return templatesContainer;
     }
 }

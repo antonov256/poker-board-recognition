@@ -21,11 +21,11 @@ public class ImageColorReplacingPreprocessor implements ImageProcessor {
         int width = image.getDimension().getWidth();
         int height = image.getDimension().getHeight();
 
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 Color color = image.getColor(x, y);
 
-                if(color.equals(oldColor))
+                if (color.equals(oldColor))
                     bufferedImage.setRGB(x, y, newColor.getRGB());
             }
         }

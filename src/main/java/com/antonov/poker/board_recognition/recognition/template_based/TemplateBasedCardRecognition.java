@@ -31,7 +31,7 @@ public class TemplateBasedCardRecognition implements CardRecognition {
 
     @Override
     public Card recognize(Image cardImage) throws CantRecognizeException {
-        if(!cardIsPresentedCheck.check(cardImage)) {
+        if (!cardIsPresentedCheck.check(cardImage)) {
             throw new CantRecognizeException("Card not presented");
         }
 
